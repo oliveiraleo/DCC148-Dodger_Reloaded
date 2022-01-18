@@ -1,0 +1,5 @@
+Objetivo: sobreviver às hordas de inimigos desviando de cada um deles.
+
+O que deve ser implementado:
+geração dos inimigos (a direção de movimentação pode ser aleatória ou podem perseguir o jogador) e
+a condição de derrota (colisão com algum inimigo).
