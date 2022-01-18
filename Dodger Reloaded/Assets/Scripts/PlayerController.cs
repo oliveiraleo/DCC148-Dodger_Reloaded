@@ -5,6 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private float speed = .1f; // speed of the player
+
+    //private float xMin = -5.5f; // left boundary of the screen
+    //private float xMax = 5.5f; // right boundary of the screen
+
+    private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
+
+    private float verticalLimits = 4.6f; // horizontal boundaries of the screen
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,30 +23,52 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         #region Keyboard Input
-        //Player movement on each axis
-        if (Input.GetKey(KeyCode.LeftArrow))
+        //Horizontal movement control
+        if (this.transform.position.x < -horizontalLimits)
         {
-            Vector3 position = this.transform.position;
-            position.x -= speed;
-            this.transform.position = position;
+            this.transform.position = new Vector3(-horizontalLimits, this.transform.position.y, 0);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        else if (this.transform.position.x > horizontalLimits)
         {
-            Vector3 position = this.transform.position;
-            position.x += speed;
-            this.transform.position = position;
+            this.transform.position = new Vector3(horizontalLimits, this.transform.position.y, 0);
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        //Vertical movement control
+        if (this.transform.position.y < -verticalLimits)
         {
-            Vector3 position = this.transform.position;
-            position.y += speed;
-            this.transform.position = position;
+            this.transform.position = new Vector3(this.transform.position.x, -verticalLimits, 0);
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        else if (this.transform.position.y > verticalLimits)
         {
-            Vector3 position = this.transform.position;
-            position.y -= speed;
-            this.transform.position = position;
+            this.transform.position = new Vector3(this.transform.position.x, verticalLimits, 0);
+        }
+        else
+        {
+
+            //Player movement on each axis
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                Vector3 position = this.transform.position;
+                position.x -= speed;
+                this.transform.position = position;
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                Vector3 position = this.transform.position;
+                position.x += speed;
+                this.transform.position = position;
+            }
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                Vector3 position = this.transform.position;
+                position.y += speed;
+                this.transform.position = position;
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                Vector3 position = this.transform.position;
+                position.y -= speed;
+                this.transform.position = position;
+            }
         }
         #endregion
     }
