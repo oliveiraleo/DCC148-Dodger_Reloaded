@@ -127,6 +127,20 @@ public class EnemyController : MonoBehaviour
         return otherDirection;
     }
 
+    /*public int getEnemyDirection()
+    {
+        return enemyDirection;
+    }
+
+    public void setEnemyDirection(int direction)
+    {
+        enemyDirection = direction;
+    }*/
+    public void setARandomEnemyDirection()
+    {
+        enemyDirection = getOtherEnemyDirection(this.enemyDirection);
+    }
+
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
         //create a collision between each enemy

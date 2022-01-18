@@ -5,16 +5,19 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    //public GameObject enemy; // enemy object
-
+    public GameObject enemyPrefab; // enemy object
+    public float enemySpawnInterval = 5f; // interval between enemy spawns. in seconds
+    private float enemySpawnTimer; // timer for enemy spawns
+    private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
+    private float verticalLimits = 4.6f; // horizontal boundaries of the screen
     public GameObject player; // player object
     public Text scoreText;
     private int score;
-
     private int topScore;
     public Text topScoreText;
-
     public Text gameOverText;
+    public GameObject restartButton; // restartButton object
+    private float restartButtonTimer = 3f; // interval between enemy spawns
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +32,10 @@ public class GameController : MonoBehaviour
         //enable the player
         player.gameObject.SetActive(true);
         //disable the game over text
-        gameOverText.text = "";
+        gameOverText.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(false);
+        //start the enemy spawn timer
+        enemySpawnTimer = enemySpawnInterval;
     }
 
     // Update is called once per frame
@@ -37,16 +43,27 @@ public class GameController : MonoBehaviour
     {
         if (player != null){
             updateScore();
+            enemySpawnTimer -= Time.deltaTime;
+            if (enemySpawnTimer <= 0)
+            {
+                enemySpawnTimer = enemySpawnInterval; // reset the enemy spawn timer
+                spawnEnemy(); // spawn an enemy
+            }
         } else {
             //if the player is null, then the game is over
-            //update the score text
+            //clear the score text
             scoreText.text = "Score: Game Over!";
             //update the top score text
             updateTopScore();
             topScoreText.text = "Top Score: " + topScore;
-            gameOverText.text = "You are dead!\nGame Over!";
+            //enable the game over text
+            gameOverText.gameObject.SetActive(true);
+            restartButtonTimer -= Time.deltaTime;
+            if (restartButtonTimer <= 0)
+            {
+                restartButton.gameObject.SetActive(true);
+            }
         }
-        
     }
 
     void updateScore()
@@ -59,5 +76,15 @@ public class GameController : MonoBehaviour
     {
         topScore = score;
         topScoreText.text = "Top Score: " + topScore;
+    }
+
+    void spawnEnemy()
+    {
+        //create a new enemy object
+        GameObject enemy = Instantiate(enemyPrefab);
+        //set the enemy's position to a random position on the screen
+        enemy.transform.position = new Vector3(Random.Range(-horizontalLimits, horizontalLimits), Random.Range(-verticalLimits, verticalLimits), 0);
+        //set the enemy's direction to a random direction
+        enemy.GetComponent<EnemyController>().setARandomEnemyDirection();
     }
 }
