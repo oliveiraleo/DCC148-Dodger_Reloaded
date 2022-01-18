@@ -6,9 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     private float speed = .1f; // speed of the player
 
-    //private float xMin = -5.5f; // left boundary of the screen
-    //private float xMax = 5.5f; // right boundary of the screen
-
     private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
 
     private float verticalLimits = 4.6f; // horizontal boundaries of the screen
@@ -43,7 +40,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-
             //Player movement on each axis
             if (Input.GetKey(KeyCode.LeftArrow))
             {
