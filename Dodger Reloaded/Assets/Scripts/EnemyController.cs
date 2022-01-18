@@ -45,6 +45,7 @@ public class EnemyController : MonoBehaviour
             this.transform.position = new Vector3(this.transform.position.x, verticalLimits, 0);
             enemyDirection = getOtherEnemyDirection(this.enemyDirection);
         }
+        //Enemy direction control
         else switch (enemyDirection)
             {
                 //Enemy movement on each axis
@@ -128,11 +129,12 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
-        //create a collision between the enemys
+        //create a collision between each enemy
         if (otherCollider.tag == "Enemy")
         {
             enemyDirection = getOtherEnemyDirection(this.enemyDirection);
         }
+        //create a collision between the enemys and the player
         else if (otherCollider.tag == "Player")
         {
             Destroy(otherCollider.gameObject);
