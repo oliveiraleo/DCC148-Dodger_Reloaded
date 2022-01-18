@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyDirection = getEnemyDirection();
+        enemyDirection = getOneRandomEnemyDirection();
     }
 
     // Update is called once per frame
@@ -102,18 +102,20 @@ public class EnemyController : MonoBehaviour
                     break;
             }
     }
-
+    #region Enemy movement auxiliary methods
     int getRandomNumber(int min, int max)
     {
         return Random.Range(min, max);
     }
 
-    int getEnemyDirection()
+    // Get a random direction for the enemy
+    int getOneRandomEnemyDirection()
     {
         int direction = getRandomNumber(0, maxMovement);
         return direction;
     }
 
+    // Creates a new direction for the enemy to move in
     int getOtherEnemyDirection(int direction)
     {
         int otherDirection = getRandomNumber(0, maxMovement);
@@ -123,4 +125,19 @@ public class EnemyController : MonoBehaviour
         }
         return otherDirection;
     }
+
+    void OnTriggerEnter2D(Collider2D otherCollider)
+    {
+        //create a collision between the enemys
+        if (otherCollider.tag == "Enemy")
+        {
+            enemyDirection = getOtherEnemyDirection(this.enemyDirection);
+        }
+        else if (otherCollider.tag == "Player")
+        {
+            Destroy(otherCollider.gameObject);
+        }
+    }
+    #endregion
+
 }
