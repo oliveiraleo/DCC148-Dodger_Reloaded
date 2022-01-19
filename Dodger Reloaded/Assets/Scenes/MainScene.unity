@@ -311,11 +311,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1072883594364292398, guid: 30cfa4892aeb3217b8d6fcbef9860ece, type: 3}
+  playerPrefab: {fileID: 4251813655474084951, guid: 2d8d258c1c9c9c143a8b96f220b1ff7f, type: 3}
   enemySpawnInterval: 1
   player: {fileID: 498276097}
   scoreText: {fileID: 629132460}
   topScoreText: {fileID: 811402627}
   gameOverText: {fileID: 519122920}
+  restartButton: {fileID: 1807420895}
   gameMenu: {fileID: 1367723068}
 --- !u!4 &420446994
 Transform:

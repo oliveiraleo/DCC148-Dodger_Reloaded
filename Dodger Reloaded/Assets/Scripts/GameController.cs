@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public GameObject enemyPrefab; // enemy object
+    public GameObject playerPrefab; // enemy object
     public float enemySpawnInterval = 5f; // interval between enemy spawns. in seconds
     private float enemySpawnTimer; // timer for enemy spawns
     private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
@@ -16,29 +17,28 @@ public class GameController : MonoBehaviour
     private int topScore;
     public Text topScoreText;
     public Text gameOverText;
-    //public GameObject restartButton; // restartButton object
-    //private float restartButtonTimer = 3f; // interval between enemy spawns
-    //public GameObject quitButton; // restartButton object
-
+    public GameObject restartButton; // restartButton object
     public GameMenuController gameMenu;
 
     // Start is called before the first frame update
     void Start()
     {
         //move the player to the center of the screen
-        player.transform.position = new Vector3(0, 0, 0);
+        //player.transform.position = new Vector3(0, 0, 0);
+        //spawnPlayer(); //instantiate the player
         //set all scores to 0 and update their text
         score = 0;
-        topScore = 0;
-        updateTopScore();
+        //topScore = 0;
+        updateTopScore(score);
         updateScore();
         //enable the player
         player.gameObject.SetActive(true);
         //disable the game over text
         gameOverText.gameObject.SetActive(false);
-        //restartButton.gameObject.SetActive(false);
+        //restartButton.gameObject.SetActive(false); // not needed anymore because we are using the GameMenuController
         //start the enemy spawn timer
         enemySpawnTimer = enemySpawnInterval;
+        restartButton.GetComponent<Button>().onClick.AddListener(restartGame); // add a listener to the restart button
     }
 
     // Update is called once per frame
@@ -56,17 +56,11 @@ public class GameController : MonoBehaviour
             //if the player is null, then the game is over
             //clear the score text
             scoreText.text = "Score: Game Over!";
-            //update the top score text
-            updateTopScore();
-            topScoreText.text = "Top Score: " + topScore;
+            //update the top score
+            updateTopScore(score);
             //enable the game over text
             gameOverText.gameObject.SetActive(true);
-            /*restartButtonTimer -= Time.deltaTime;
-            if (restartButtonTimer <= 0)
-            {
-                restartButton.gameObject.SetActive(true);
-                quitButton.gameObject.SetActive(true);
-            }*/
+            //loads the game menu
             gameMenu.loadMenuEndGame();
         }
     }
@@ -77,9 +71,12 @@ public class GameController : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
-    void updateTopScore()
+    void updateTopScore(int newScore)
     {
-        topScore = score;
+        if (newScore > topScore)
+        {
+            topScore = newScore;
+        }
         topScoreText.text = "Top Score: " + topScore;
     }
 
@@ -91,5 +88,18 @@ public class GameController : MonoBehaviour
         enemy.transform.position = new Vector3(Random.Range(-horizontalLimits, horizontalLimits), Random.Range(-verticalLimits, verticalLimits), 0);
         //set the enemy's direction to a random direction
         enemy.GetComponent<EnemyController>().setARandomEnemyDirection();
+    }
+
+    void spawnPlayer()
+    {
+        //create a new enemy object
+        GameObject player = Instantiate(playerPrefab);
+        //move the player to the center of the screen
+        player.transform.position = new Vector3(0, 0, 0);
+    }
+
+    public void restartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
     }
 }
