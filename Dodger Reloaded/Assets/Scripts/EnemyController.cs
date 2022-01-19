@@ -6,13 +6,9 @@ public class EnemyController : MonoBehaviour
 {
     private int maxMovement = 7; // max movement options of the enemy
     private float speed = .05f; // speed of the enemy
-
     private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
-
     private float verticalLimits = 4.6f; // horizontal boundaries of the screen
-
     private int enemyDirection; // direction of the enemy
-
     public GameObject enemy; // enemy object
     // Start is called before the first frame update
     void Start()
@@ -127,15 +123,6 @@ public class EnemyController : MonoBehaviour
         return otherDirection;
     }
 
-    /*public int getEnemyDirection()
-    {
-        return enemyDirection;
-    }
-
-    public void setEnemyDirection(int direction)
-    {
-        enemyDirection = direction;
-    }*/
     public void setARandomEnemyDirection()
     {
         enemyDirection = getOtherEnemyDirection(this.enemyDirection);
@@ -146,11 +133,21 @@ public class EnemyController : MonoBehaviour
         //create a collision between each enemy
         if (otherCollider.tag == "Enemy")
         {
+            // redirects or reflects the enemy movement
             enemyDirection = getOtherEnemyDirection(this.enemyDirection);
         }
         //create a collision between the enemys and the player
         else if (otherCollider.tag == "Player")
         {
+            //stop the enemy that collided with the player
+            speed = 0;
+            //gets the local scale of game object
+            Vector3 objectScale = transform.localScale;
+            //sets the local scale of the enemy object, making it bigger
+            transform.localScale = new Vector3(objectScale.x*2f,  objectScale.y*2f, objectScale.z);
+            //disable the collider to prevent the other enemys from colliding with this enemy again
+            this.GetComponent<Collider2D>().enabled = false;
+            //destroy the player
             Destroy(otherCollider.gameObject);
         }
     }

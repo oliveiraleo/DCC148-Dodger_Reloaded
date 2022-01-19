@@ -29,7 +29,9 @@ public class GameController : MonoBehaviour
         //set all scores to 0 and update their text
         score = 0;
         //topScore = 0;
-        updateTopScore(score);
+        readScore();
+        updateTopScore(topScore);
+        //PlayerPrefs.DeleteKey("topScore");
         updateScore();
         //enable the player
         player.gameObject.SetActive(true);
@@ -62,6 +64,13 @@ public class GameController : MonoBehaviour
             gameOverText.gameObject.SetActive(true);
             //loads the game menu
             gameMenu.loadMenuEndGame();
+            saveScore();
+        }
+        //enables a key to clear the top score
+        if (Input.GetKeyDown(KeyCode.Space)){
+            PlayerPrefs.SetInt("topScore", 0);
+            readScore();
+            updateTopScore(topScore);
         }
     }
 
@@ -76,6 +85,7 @@ public class GameController : MonoBehaviour
         if (newScore > topScore)
         {
             topScore = newScore;
+            saveScore();
         }
         topScoreText.text = "Top Score: " + topScore;
     }
@@ -101,5 +111,22 @@ public class GameController : MonoBehaviour
     public void restartGame()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+    }
+
+    void saveScore()
+    {
+        //save the score to the player prefs
+        //PlayerPrefs.SetInt("score", score);
+        //save the top score to the player prefs
+        PlayerPrefs.SetInt("topScore", topScore);
+        //PlayerPrefs.SetInt("topScore", 0); // use it to reset the top score
+    }
+
+    void readScore()
+    {
+        //read the score from the player prefs
+        //score = PlayerPrefs.GetInt("score");
+        //read the top score from the player prefs
+        topScore = PlayerPrefs.GetInt("topScore");
     }
 }
