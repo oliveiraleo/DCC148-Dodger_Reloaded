@@ -16,9 +16,11 @@ public class GameController : MonoBehaviour
     private int topScore;
     public Text topScoreText;
     public Text gameOverText;
-    public GameObject restartButton; // restartButton object
-    private float restartButtonTimer = 3f; // interval between enemy spawns
-    public GameObject quitButton; // restartButton object
+    //public GameObject restartButton; // restartButton object
+    //private float restartButtonTimer = 3f; // interval between enemy spawns
+    //public GameObject quitButton; // restartButton object
+
+    public GameMenuController gameMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +36,7 @@ public class GameController : MonoBehaviour
         player.gameObject.SetActive(true);
         //disable the game over text
         gameOverText.gameObject.SetActive(false);
-        restartButton.gameObject.SetActive(false);
+        //restartButton.gameObject.SetActive(false);
         //start the enemy spawn timer
         enemySpawnTimer = enemySpawnInterval;
     }
@@ -59,12 +61,13 @@ public class GameController : MonoBehaviour
             topScoreText.text = "Top Score: " + topScore;
             //enable the game over text
             gameOverText.gameObject.SetActive(true);
-            restartButtonTimer -= Time.deltaTime;
+            /*restartButtonTimer -= Time.deltaTime;
             if (restartButtonTimer <= 0)
             {
                 restartButton.gameObject.SetActive(true);
                 quitButton.gameObject.SetActive(true);
-            }
+            }*/
+            gameMenu.loadMenuEndGame();
         }
     }
 
