@@ -5,9 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private float speed = .1f; // speed of the player
-
     private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
-
     private float verticalLimits = 4.6f; // horizontal boundaries of the screen
 
     // Start is called before the first frame update
@@ -41,25 +39,25 @@ public class PlayerController : MonoBehaviour
         else
         {
             //Player movement on each axis
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
                 Vector3 position = this.transform.position;
                 position.x -= speed;
                 this.transform.position = position;
             }
-            if (Input.GetKey(KeyCode.RightArrow))
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
                 Vector3 position = this.transform.position;
                 position.x += speed;
                 this.transform.position = position;
             }
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
             {
                 Vector3 position = this.transform.position;
                 position.y += speed;
                 this.transform.position = position;
             }
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
             {
                 Vector3 position = this.transform.position;
                 position.y -= speed;
