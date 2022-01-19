@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public Text gameOverText;
     public GameObject restartButton; // restartButton object
     private float restartButtonTimer = 3f; // interval between enemy spawns
+    public GameObject quitButton; // restartButton object
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +63,7 @@ public class GameController : MonoBehaviour
             if (restartButtonTimer <= 0)
             {
                 restartButton.gameObject.SetActive(true);
+                quitButton.gameObject.SetActive(true);
             }
         }
     }
