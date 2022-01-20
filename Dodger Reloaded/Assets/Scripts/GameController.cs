@@ -63,9 +63,12 @@ public class GameController : MonoBehaviour
             if (numberOfEnemies > 15)
             {
                 enemySpawnInterval = 5f; // change the interval between enemy spawns to 5 seconds
+            } else if (numberOfEnemies > 30)
+            {
+                enemySpawnInterval = 10f; // change the interval between enemy spawns to 5 seconds
             }
             enemySpawnTimer -= Time.deltaTime; // starts the counter for enemy spawns
-            if (enemySpawnTimer <= 0)
+            if (enemySpawnTimer <= 0 && numberOfEnemies <= 50)
             {
                 enemySpawnTimer = enemySpawnInterval; // reset the enemy spawn timer
                 spawnEnemy(); // spawn an enemy
