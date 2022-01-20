@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
     public AudioSource playerDeathSound;
     private float deathSoundTimer = 0f; // timer for death sound
     public AudioSource newTopScoreSound;
+    private bool newTopScoreSoundPlayed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -111,10 +112,11 @@ public class GameController : MonoBehaviour
     {
         score += 1/30f; // adds 2 points every second
         //if the score is greater than the top score, then change both to a new color
-        if ((int)score == (int)topScore)
+        if (score >= topScore && !newTopScoreSoundPlayed)
         {
             scoreText.color = Color.green;
             topScoreText.color = Color.red;
+            newTopScoreSoundPlayed = true;
             newTopScoreSound.Play();
         }
         scoreText.text = "Score: " + (int)score;

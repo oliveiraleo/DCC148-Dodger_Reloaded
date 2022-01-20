@@ -346,7 +346,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1072883594364292398, guid: 30cfa4892aeb3217b8d6fcbef9860ece, type: 3}
   playerPrefab: {fileID: 4251813655474084951, guid: 2d8d258c1c9c9c143a8b96f220b1ff7f, type: 3}
-  enemySpawnInterval: 1
   player: {fileID: 498276097}
   scoreText: {fileID: 629132460}
   topScoreText: {fileID: 811402627}
@@ -1221,7 +1220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.990005, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
