@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    // Visual elements / Game objects
     public GameObject enemyPrefab; // enemy object
     public GameObject playerPrefab; // enemy object
     public float enemySpawnInterval = 5f; // interval between enemy spawns. in seconds
@@ -12,6 +13,7 @@ public class GameController : MonoBehaviour
     private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
     private float verticalLimits = 4.6f; // horizontal boundaries of the screen
     public GameObject player; // player object
+    // UI elements
     public Text scoreText;
     private int score;
     private int topScore;
@@ -19,6 +21,12 @@ public class GameController : MonoBehaviour
     public Text gameOverText;
     public GameObject restartButton; // restartButton object
     public GameMenuController gameMenu;
+    // Audio / Sound effects
+    public AudioSource resetTopScoreSound;
+    public AudioSource enemySpawnSound;
+    public AudioSource playerDeathSound;
+    private float deathSoundTimer = 0f; // timer for death sound
+    public AudioSource newTopScoreSound;
 
     // Start is called before the first frame update
     void Start()
@@ -56,8 +64,14 @@ public class GameController : MonoBehaviour
             }
         } else {
             //if the player is null, then the game is over
+            //play the player death sound
+            deathSoundTimer -= Time.deltaTime;
+            if (deathSoundTimer >= -0.2 && deathSoundTimer < 0) // prevents muiltiple excutions of the sound
+            {
+                playerDeathSound.Play();
+            }
             //clear the score text
-            scoreText.text = "Score: Game Over!";
+            //scoreText.text = "Score: Game Over!";
             //update the top score
             updateTopScore(score);
             //enable the game over text
@@ -71,6 +85,7 @@ public class GameController : MonoBehaviour
             PlayerPrefs.SetInt("topScore", 0);
             readScore();
             updateTopScore(topScore);
+            resetTopScoreSound.Play();
         }
     }
 
@@ -86,6 +101,7 @@ public class GameController : MonoBehaviour
         {
             topScore = newScore;
             saveScore();
+            newTopScoreSound.Play();
         }
         topScoreText.text = "Top Score: " + topScore;
     }
@@ -98,6 +114,8 @@ public class GameController : MonoBehaviour
         enemy.transform.position = new Vector3(Random.Range(-horizontalLimits, horizontalLimits), Random.Range(-verticalLimits, verticalLimits), 0);
         //set the enemy's direction to a random direction
         enemy.GetComponent<EnemyController>().setARandomEnemyDirection();
+        //play the enemy spawn sound
+        enemySpawnSound.Play();
     }
 
     void spawnPlayer()
