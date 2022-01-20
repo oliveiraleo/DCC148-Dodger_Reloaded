@@ -8,15 +8,16 @@ public class GameController : MonoBehaviour
     // Visual elements / Game objects
     public GameObject enemyPrefab; // enemy object
     public GameObject playerPrefab; // enemy object
-    public float enemySpawnInterval = 5f; // interval between enemy spawns. in seconds
+    private float enemySpawnInterval = 1f; // interval between enemy spawns. in seconds
     private float enemySpawnTimer; // timer for enemy spawns
     private float horizontalLimits = 8.5f; // horizontal boundaries of the screen
     private float verticalLimits = 4.6f; // horizontal boundaries of the screen
+    private int numberOfEnemies; // number of enemies on the screen
     public GameObject player; // player object
     // UI elements
     public Text scoreText;
-    private int score;
-    private int topScore;
+    private float score;
+    private float topScore;
     public Text topScoreText;
     public Text gameOverText;
     public Text playerFinalScoreText;
@@ -36,10 +37,11 @@ public class GameController : MonoBehaviour
         //player.transform.position = new Vector3(0, 0, 0);
         //spawnPlayer(); //instantiate the player
         //set all scores to 0 and update their text
-        score = 0;
+        score = 0f;
         //topScore = 0;
         readScore();
         updateTopScore(topScore);
+        numberOfEnemies = 0;
         //PlayerPrefs.DeleteKey("topScore");
         updateScore();
         //enable the player
@@ -57,7 +59,12 @@ public class GameController : MonoBehaviour
     {
         if (player != null){
             updateScore();
-            enemySpawnTimer -= Time.deltaTime;
+            //once the number of enemies on the screen reaches a certain number, reduce the spawn speed
+            if (numberOfEnemies > 15)
+            {
+                enemySpawnInterval = 5f; // change the interval between enemy spawns to 5 seconds
+            }
+            enemySpawnTimer -= Time.deltaTime; // starts the counter for enemy spawns
             if (enemySpawnTimer <= 0)
             {
                 enemySpawnTimer = enemySpawnInterval; // reset the enemy spawn timer
@@ -78,7 +85,7 @@ public class GameController : MonoBehaviour
             //enable the game over text
             gameOverText.gameObject.SetActive(true);
             //enable the final score text
-            playerFinalScoreText.text = score.ToString();
+            playerFinalScoreText.text = ((int)score).ToString();
             playerFinalScoreText.gameObject.SetActive(true);
             //loads the game menu
             gameMenu.loadMenuEndGame();
@@ -95,11 +102,11 @@ public class GameController : MonoBehaviour
 
     void updateScore()
     {
-        score += 1;
-        scoreText.text = "Score: " + score;
+        score += 1/30f; // adds 2 points every second
+        scoreText.text = "Score: " + (int)score;
     }
 
-    void updateTopScore(int newScore)
+    void updateTopScore(float newScore)
     {
         if (newScore > topScore)
         {
@@ -107,7 +114,7 @@ public class GameController : MonoBehaviour
             saveScore();
             newTopScoreSound.Play();
         }
-        topScoreText.text = "Top Score: " + topScore;
+        topScoreText.text = "Top Score: " + (int)topScore;
     }
 
     void spawnEnemy()
@@ -120,6 +127,8 @@ public class GameController : MonoBehaviour
         enemy.GetComponent<EnemyController>().setARandomEnemyDirection();
         //play the enemy spawn sound
         enemySpawnSound.Play();
+        //increment the enemy counter
+        numberOfEnemies++;
     }
 
     void spawnPlayer()
@@ -140,7 +149,7 @@ public class GameController : MonoBehaviour
         //save the score to the player prefs
         //PlayerPrefs.SetInt("score", score);
         //save the top score to the player prefs
-        PlayerPrefs.SetInt("topScore", topScore);
+        PlayerPrefs.SetInt("topScore", (int)topScore);
         //PlayerPrefs.SetInt("topScore", 0); // use it to reset the top score
     }
 
