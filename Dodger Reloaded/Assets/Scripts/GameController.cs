@@ -60,13 +60,17 @@ public class GameController : MonoBehaviour
         if (player != null){
             updateScore();
             //once the number of enemies on the screen reaches a certain number, reduce the spawn speed
-            if (numberOfEnemies > 15)
+            if (numberOfEnemies > 10) //'level' 1
             {
                 enemySpawnInterval = 5f; // change the interval between enemy spawns to 5 seconds
-            } else if (numberOfEnemies > 30)
+            } else if (numberOfEnemies > 20) //'level' 2
             {
-                enemySpawnInterval = 10f; // change the interval between enemy spawns to 5 seconds
+                enemySpawnInterval = 10f; // change the interval between enemy spawns to 10 seconds
+            } else if (numberOfEnemies > 30) //'level' 3
+            {
+                enemySpawnInterval = 15f; // change the interval between enemy spawns to 15 seconds
             }
+            //enemies spawn control
             enemySpawnTimer -= Time.deltaTime; // starts the counter for enemy spawns
             if (enemySpawnTimer <= 0 && numberOfEnemies <= 50)
             {
@@ -125,13 +129,32 @@ public class GameController : MonoBehaviour
         //create a new enemy object
         GameObject enemy = Instantiate(enemyPrefab);
         //set the enemy's position to a random position on the screen
-        enemy.transform.position = new Vector3(Random.Range(-horizontalLimits, horizontalLimits), Random.Range(-verticalLimits, verticalLimits), 0);
+        enemy.transform.position = getAnEnemyRandomPosition();
         //set the enemy's direction to a random direction
         enemy.GetComponent<EnemyController>().setARandomEnemyDirection();
         //play the enemy spawn sound
         enemySpawnSound.Play();
         //increment the enemy counter
         numberOfEnemies++;
+        //prints the player's position and the new enemy's position on the console
+        //Debug.Log("Player: " + (float)player.transform.position.x + " " + (float)player.transform.position.y);
+        //Debug.Log("Enemy: " + (float)enemy.transform.position.x + " " + (float)enemy.transform.position.y);
+    }
+
+    Vector3 getAnEnemyRandomPosition()
+    {
+        Vector3 newPos = new Vector3(Random.Range(-horizontalLimits, horizontalLimits), Random.Range(-verticalLimits, verticalLimits), 0);
+        //exclude the area near the player from the random position
+        if (newPos.x >= (player.transform.position.x - 5.5) &&
+        newPos.x <= (player.transform.position.x + 5.5) &&
+        newPos.y >= (player.transform.position.y - 3.5) &&
+        newPos.y <= (player.transform.position.y + 3.5))
+        {
+            return getAnEnemyRandomPosition();
+        } else
+        {
+            return newPos;
+        }
     }
 
     void spawnPlayer()
@@ -149,17 +172,13 @@ public class GameController : MonoBehaviour
 
     void saveScore()
     {
-        //save the score to the player prefs
-        //PlayerPrefs.SetInt("score", score);
         //save the top score to the player prefs
         PlayerPrefs.SetInt("topScore", (int)topScore);
-        //PlayerPrefs.SetInt("topScore", 0); // use it to reset the top score
+        //PlayerPrefs.SetInt("topScore", 0); // use this to reset the top score
     }
 
     void readScore()
     {
-        //read the score from the player prefs
-        //score = PlayerPrefs.GetInt("score");
         //read the top score from the player prefs
         topScore = PlayerPrefs.GetInt("topScore");
     }
