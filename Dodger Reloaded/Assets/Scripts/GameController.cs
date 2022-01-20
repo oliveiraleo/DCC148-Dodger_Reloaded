@@ -81,19 +81,19 @@ public class GameController : MonoBehaviour
             //if the player is null, then the game is over
             //play the player death sound
             deathSoundTimer -= Time.deltaTime;
-            if (deathSoundTimer >= -0.2 && deathSoundTimer < 0) // prevents muiltiple excutions of the sound
+            if (deathSoundTimer >= -0.2 && deathSoundTimer < 0) // prevents multiple executions of the sound
             {
                 playerDeathSound.Play();
             }
             //clear the score text
             scoreText.text = "Score: Game Over!";
+            scoreText.color = Color.yellow;
             //update the top score
             updateTopScore(score);
             //enable the game over text
             gameOverText.gameObject.SetActive(true);
             //enable the final score text
-            playerFinalScoreText.text = ((int)score).ToString();
-            playerFinalScoreText.gameObject.SetActive(true);
+            updateFinalScore();
             //loads the game menu
             gameMenu.loadMenuEndGame();
             saveScore();
@@ -110,6 +110,13 @@ public class GameController : MonoBehaviour
     void updateScore()
     {
         score += 1/30f; // adds 2 points every second
+        //if the score is greater than the top score, then change both to a new color
+        if ((int)score == (int)topScore)
+        {
+            scoreText.color = Color.green;
+            topScoreText.color = Color.red;
+            newTopScoreSound.Play();
+        }
         scoreText.text = "Score: " + (int)score;
     }
 
@@ -119,9 +126,21 @@ public class GameController : MonoBehaviour
         {
             topScore = newScore;
             saveScore();
-            newTopScoreSound.Play();
+            //newTopScoreSound.Play();
         }
         topScoreText.text = "Top Score: " + (int)topScore;
+    }
+
+    void updateFinalScore()
+    {
+        playerFinalScoreText.gameObject.SetActive(true);
+        playerFinalScoreText.text = ((int)score).ToString();
+        if (score >= topScore)
+        {
+            playerFinalScoreText.color = Color.green;
+        } else {
+            playerFinalScoreText.color = Color.red;
+        }
     }
 
     void spawnEnemy()
