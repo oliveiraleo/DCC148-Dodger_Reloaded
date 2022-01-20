@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     private int topScore;
     public Text topScoreText;
     public Text gameOverText;
+    public Text playerFinalScoreText;
     public GameObject restartButton; // restartButton object
     public GameMenuController gameMenu;
     // Audio / Sound effects
@@ -71,11 +72,14 @@ public class GameController : MonoBehaviour
                 playerDeathSound.Play();
             }
             //clear the score text
-            //scoreText.text = "Score: Game Over!";
+            scoreText.text = "Score: Game Over!";
             //update the top score
             updateTopScore(score);
             //enable the game over text
             gameOverText.gameObject.SetActive(true);
+            //enable the final score text
+            playerFinalScoreText.text = score.ToString();
+            playerFinalScoreText.gameObject.SetActive(true);
             //loads the game menu
             gameMenu.loadMenuEndGame();
             saveScore();
