@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -15,12 +16,12 @@ public class GameController : MonoBehaviour
     private int numberOfEnemies; // number of enemies on the screen
     public GameObject player; // player object
     // UI elements
-    public Text scoreText;
+    public TextMeshPro scoreText;
     private float score;
     private float topScore;
-    public Text topScoreText;
-    public Text gameOverText;
-    public Text playerFinalScoreText;
+    public TextMeshPro topScoreText;
+    public TextMeshPro gameOverText;
+    public TextMeshPro playerFinalScoreText;
     public GameObject restartButton; // restartButton object
     public GameMenuController gameMenu;
     // Audio / Sound effects
@@ -39,7 +40,6 @@ public class GameController : MonoBehaviour
         //spawnPlayer(); //instantiate the player
         //set all scores to 0 and update their text
         score = 0f;
-        //topScore = 0;
         readScore();
         updateTopScore(topScore);
         numberOfEnemies = 0;
@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour
         //enable the player
         player.gameObject.SetActive(true);
         //disable the game over text
-        gameOverText.gameObject.SetActive(false);
+        //gameOverText.gameObject.SetActive(false);
         //restartButton.gameObject.SetActive(false); // not needed anymore because we are using the GameMenuController
         //start the enemy spawn timer
         enemySpawnTimer = enemySpawnInterval;
@@ -111,6 +111,7 @@ public class GameController : MonoBehaviour
     void updateScore()
     {
         score += 1/30f; // adds 2 points every second
+        //TODO use deltatime to calculate the score
         //if the score is greater than the top score, then change both to a new color
         if (score >= topScore && !newTopScoreSoundPlayed)
         {
