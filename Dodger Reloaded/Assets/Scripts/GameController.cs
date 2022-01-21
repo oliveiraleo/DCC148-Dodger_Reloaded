@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     // UI elements
     public TextMeshPro scoreText;
     private float score;
+    private float scoreIncrementTimer = 0f; // timer for score increment, set to 0 to start
     private float topScore;
     public TextMeshPro topScoreText;
     public TextMeshPro gameOverText;
@@ -43,16 +44,13 @@ public class GameController : MonoBehaviour
         readScore();
         updateTopScore(topScore);
         numberOfEnemies = 0;
-        //PlayerPrefs.DeleteKey("topScore");
         updateScore();
         //enable the player
         player.gameObject.SetActive(true);
-        //disable the game over text
-        //gameOverText.gameObject.SetActive(false);
-        //restartButton.gameObject.SetActive(false); // not needed anymore because we are using the GameMenuController
         //start the enemy spawn timer
         enemySpawnTimer = enemySpawnInterval;
-        restartButton.GetComponent<Button>().onClick.AddListener(restartGame); // add a listener to the restart button
+        //add a listener to the restart button
+        restartButton.GetComponent<Button>().onClick.AddListener(restartGame);
     }
 
     // Update is called once per frame
@@ -110,8 +108,13 @@ public class GameController : MonoBehaviour
 
     void updateScore()
     {
-        score += 1/30f; // adds 2 points every second
-        //TODO use deltatime to calculate the score
+        // adds a point every second
+        scoreIncrementTimer += Time.deltaTime;
+        if (scoreIncrementTimer >= 1f)
+        {
+            score += 1f;
+            scoreIncrementTimer = 0f;
+        }
         //if the score is greater than the top score, then change both to a new color
         if (score >= topScore && !newTopScoreSoundPlayed)
         {
